@@ -32,7 +32,6 @@ class ToggleButton(Static, can_focus=True):
         [RadioButton][textual.widgets.RadioButton].
     """
 
-    ALLOW_SELECT = False
     BINDINGS: ClassVar[list[BindingType]] = [
         Binding("enter,space", "toggle_button", "Toggle", show=False),
     ]

@@ -86,8 +86,7 @@ class BindingsTable(Static):
                     binding.description, end="", style=description_style
                 )
                 if binding.tooltip:
-                    if binding.description:
-                        text.append(" ")
+                    text.append(" ")
                     text.append(binding.tooltip, "dim")
                 return text
 
@@ -120,11 +119,11 @@ class KeyPanel(VerticalScroll, can_focus=False):
     """
 
     DEFAULT_CSS = """
-    KeyPanel {
+    KeyPanel {                    
         split: right;
         width: 33%;
-        min-width: 30;
-        max-width: 60;
+        min-width: 30;              
+        max-width: 60;    
         border-left: vkey $foreground 30%;
         padding: 0 1;
         height: 1fr;
@@ -132,7 +131,7 @@ class KeyPanel(VerticalScroll, can_focus=False):
         align: center top;
 
         &> BindingsTable > .bindings-table--key {
-            color: $accent;
+            color: $accent;           
             text-style: bold;
             padding: 0 1;
         }
@@ -152,7 +151,7 @@ class KeyPanel(VerticalScroll, can_focus=False):
         #bindings-table {
             width: auto;
             height: auto;
-        }
+        }      
     }
     """
 

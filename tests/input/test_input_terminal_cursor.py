@@ -8,9 +8,7 @@ class InputApp(App):
     CSS = "Input { padding: 4 8 }"
 
     def compose(self) -> ComposeResult:
-        # We don't want to select the text on focus, as selected text
-        # has different interactions with the cursor_left action.
-        yield Input("こんにちは!", select_on_focus=False)
+        yield Input("こんにちは!")
 
 
 async def test_initial_terminal_cursor_position():

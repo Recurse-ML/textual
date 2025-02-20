@@ -35,6 +35,7 @@ from typing import (
 
 import rich.repr
 from rich.align import Align
+from rich.style import Style
 from rich.text import Text
 from typing_extensions import Final, TypeAlias
 
@@ -47,9 +48,9 @@ from textual.fuzzy import Matcher
 from textual.message import Message
 from textual.reactive import var
 from textual.screen import Screen, SystemModalScreen
-from textual.style import Style
 from textual.timer import Timer
 from textual.types import IgnoreReturnCallbackType
+from textual.visual import Style as VisualStyle
 from textual.visual import VisualType
 from textual.widget import Widget
 from textual.widgets import Button, Input, LoadingIndicator, OptionList, Static
@@ -189,10 +190,6 @@ class Provider(ABC):
         Args:
             screen: A reference to the active screen.
         """
-        if match_style is not None:
-            assert isinstance(
-                match_style, Style
-            ), "match_style must be a Visual style (from textual.style import Style)"
         self.__screen = screen
         self.__match_style = match_style
         self._init_task: Task | None = None
@@ -232,9 +229,7 @@ class Provider(ABC):
             A [fuzzy matcher][textual.fuzzy.Matcher] object for matching against candidate hits.
         """
         return Matcher(
-            user_input,
-            match_style=self.match_style,
-            case_sensitive=case_sensitive,
+            user_input, match_style=self.match_style, case_sensitive=case_sensitive
         )
 
     def _post_init(self) -> None:
@@ -420,9 +415,6 @@ class Command(Option):
         super().__init__(prompt, id, disabled)
         self.hit = hit
         """The details of the hit associated with the option."""
-
-    def __hash__(self) -> int:
-        return id(self)
 
     def __lt__(self, other: object) -> bool:
         if isinstance(other, Command):
@@ -784,7 +776,7 @@ class CommandPalette(SystemModalScreen[None]):
         with Vertical(id="--container"):
             with Horizontal(id="--input"):
                 yield SearchIcon()
-                yield CommandInput(placeholder=self._placeholder, select_on_focus=False)
+                yield CommandInput(placeholder=self._placeholder)
                 if not self.run_on_select:
                     yield Button("\u25b6")
             with Vertical(id="--results"):
@@ -811,7 +803,9 @@ class CommandPalette(SystemModalScreen[None]):
         self.app.post_message(CommandPalette.Opened())
         self._calling_screen = self.app.screen_stack[-2]
 
-        match_style = self.get_visual_style("command-palette--highlight", partial=True)
+        match_style = self.get_component_rich_style(
+            "command-palette--highlight", partial=True
+        )
 
         assert self._calling_screen is not None
         self._providers = [
@@ -1107,17 +1101,13 @@ class CommandPalette(SystemModalScreen[None]):
             def build_prompt() -> Iterable[Content]:
                 """Generator for prompt content."""
                 assert hit is not None
-                if isinstance(hit.prompt, Text):
-                    yield Content.from_rich_text(hit.prompt)
-                else:
-                    yield Content.from_markup(hit.prompt)
-
+                yield Content.from_rich_text(hit.prompt)
                 # Optional help text
                 if hit.help:
-                    help_style = Style.from_styles(
+                    help_style = VisualStyle.from_styles(
                         self.get_component_styles("command-palette--help-text")
                     )
-                    yield Content.from_markup(hit.help).stylize_before(help_style)
+                    yield Content.from_rich_text(hit.help).stylize_before(help_style)
 
             prompt = Content("\n").join(build_prompt())
 
@@ -1231,9 +1221,8 @@ class CommandPalette(SystemModalScreen[None]):
                 # decide what to do with it (hopefully it'll run it).
                 self._cancel_gather_commands()
                 self.app.post_message(CommandPalette.Closed(option_selected=True))
-                self.app._delay_update()
                 self.dismiss()
-                self.app.call_later(self._selected_command.command)
+                self.call_later(self._selected_command.command)
 
     @on(OptionList.OptionHighlighted)
     def _stop_event_leak(self, event: OptionList.OptionHighlighted) -> None:

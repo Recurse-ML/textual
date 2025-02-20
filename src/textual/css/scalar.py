@@ -242,7 +242,7 @@ class Scalar(NamedTuple):
     @classmethod
     @lru_cache(maxsize=1024)
     def parse(cls, token: str, percent_unit: Unit = Unit.WIDTH) -> Scalar:
-        """Parse a string into a Scalar
+        """Parse a string in to a Scalar
 
         Args:
             token: A string containing a scalar, e.g. "3.14fr"
@@ -267,7 +267,7 @@ class Scalar(NamedTuple):
     def resolve(
         self, size: Size, viewport: Size, fraction_unit: Fraction | None = None
     ) -> Fraction:
-        """Resolve scalar with units into a dimensions.
+        """Resolve scalar with units in to a dimensions.
 
         Args:
             size: Size of the container.
@@ -348,7 +348,7 @@ class ScalarOffset(NamedTuple):
         yield None, str(self.y)
 
     def resolve(self, size: Size, viewport: Size) -> Offset:
-        """Resolve the offset into cells.
+        """Resolve the offset in to cells.
 
         Args:
             size: Size of container.

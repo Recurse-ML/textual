@@ -11,6 +11,7 @@ async def test_issue_4248() -> None:
 
     class ActionApp(App[None]):
         def compose(self) -> ComposeResult:
+            yield Label("[@click]click me and crash[/]", id="nothing")
             yield Label("[@click=]click me and crash[/]", id="no-params")
             yield Label("[@click=()]click me and crash[/]", id="empty-params")
             yield Label("[@click=foobar]click me[/]", id="unknown-sans-parens")
@@ -25,6 +26,8 @@ async def test_issue_4248() -> None:
 
     app = ActionApp()
     async with app.run_test() as pilot:
+        assert bumps == 0
+        await pilot.click("#nothing")
         assert bumps == 0
         await pilot.click("#no-params")
         assert bumps == 0
