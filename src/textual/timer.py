@@ -85,7 +85,12 @@ class Timer:
         self._task = create_task(self._run_timer(), name=self.name)
 
     def stop(self) -> None:
-        """Stop the timer."""
+        """Stop the timer.
+
+        Returns:
+            A Task object. Await this to wait until the timer has completed.
+
+        """
         if self._task is None:
             return
 
@@ -153,7 +158,7 @@ class Timer:
             next_timer = start + ((count + 1) * _interval)
             now = _time.get_time()
             if self._skip and next_timer < now:
-                count = int((now - start) / _interval + 1)
+                count += 1
                 continue
             now = _time.get_time()
             wait_time = max(0, next_timer - now)

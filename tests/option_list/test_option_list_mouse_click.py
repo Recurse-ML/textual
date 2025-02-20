@@ -3,7 +3,7 @@ from __future__ import annotations
 from textual import on
 from textual.app import App, ComposeResult
 from textual.widgets import OptionList
-from textual.widgets.option_list import Option
+from textual.widgets.option_list import Option, Separator
 
 
 class OptionListApp(App[None]):
@@ -12,7 +12,7 @@ class OptionListApp(App[None]):
     def compose(self) -> ComposeResult:
         yield OptionList(
             Option("0"),
-            None,
+            Separator(),
             Option("1"),
         )
 

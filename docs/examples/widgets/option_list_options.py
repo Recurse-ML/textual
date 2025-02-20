@@ -1,6 +1,6 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header, OptionList
-from textual.widgets.option_list import Option
+from textual.widgets.option_list import Option, Separator
 
 
 class OptionListApp(App[None]):
@@ -11,22 +11,22 @@ class OptionListApp(App[None]):
         yield OptionList(
             Option("Aerilon", id="aer"),
             Option("Aquaria", id="aqu"),
-            None,
+            Separator(),
             Option("Canceron", id="can"),
             Option("Caprica", id="cap", disabled=True),
-            None,
+            Separator(),
             Option("Gemenon", id="gem"),
-            None,
+            Separator(),
             Option("Leonis", id="leo"),
             Option("Libran", id="lib"),
-            None,
+            Separator(),
             Option("Picon", id="pic"),
-            None,
+            Separator(),
             Option("Sagittaron", id="sag"),
             Option("Scorpia", id="sco"),
-            None,
+            Separator(),
             Option("Tauron", id="tau"),
-            None,
+            Separator(),
             Option("Virgon", id="vir"),
         )
         yield Footer()
