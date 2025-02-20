@@ -33,10 +33,7 @@ class HeaderIcon(Widget):
     """The character to use as the icon within the header."""
 
     def on_mount(self) -> None:
-        if self.app.ENABLE_COMMAND_PALETTE:
-            self.tooltip = "Open the command palette"
-        else:
-            self.disabled = True
+        self.tooltip = "Open the command palette"
 
     async def on_click(self, event: Click) -> None:
         """Launch the command palette when icon is clicked."""

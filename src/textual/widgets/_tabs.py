@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 import rich.repr
+from rich.console import RenderableType
 from rich.style import Style
 from rich.text import Text, TextType
 
@@ -20,9 +21,6 @@ from textual.reactive import reactive
 from textual.renderables.bar import Bar
 from textual.widget import Widget
 from textual.widgets import Static
-
-if TYPE_CHECKING:
-    from textual.content import Content, ContentType
 
 
 class Underline(Widget):
@@ -150,7 +148,7 @@ class Tab(Static):
 
     def __init__(
         self,
-        label: ContentType,
+        label: TextType,
         *,
         id: str | None = None,
         classes: str | None = None,
@@ -165,23 +163,23 @@ class Tab(Static):
             disabled: Whether the tab is disabled or not.
         """
         super().__init__(id=id, classes=classes, disabled=disabled)
-        self._label: Content
+        self._label: Text
         # Setter takes Text or str
         self.label = label  # type: ignore[assignment]
 
     @property
-    def label(self) -> Content:
+    def label(self) -> Text:
         """The label for the tab."""
         return self._label
 
     @label.setter
-    def label(self, label: ContentType) -> None:
-        self._label = self.render_str(label)
+    def label(self, label: TextType) -> None:
+        self._label = Text.from_markup(label) if isinstance(label, str) else label
         self.update(self._label)
 
-    def update(self, content: ContentType = "") -> None:
+    def update(self, renderable: RenderableType = "") -> None:
         self.post_message(self.Relabelled(self))
-        return super().update(self.render_str(content))
+        return super().update(renderable)
 
     @property
     def label_text(self) -> str:
