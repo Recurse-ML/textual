@@ -26,7 +26,7 @@ class DecodeError(Exception):
 
 
 def dump(data: object) -> bytes:
-    """Encodes a data structure into bytes.
+    """Encodes a data structure in to bytes.
 
     Args:
         data: Data structure

@@ -149,11 +149,11 @@ Your single pane of glass for real-time analytics into MySQL/MariaDB & ProxySQL
 [Dolphie Github Repository](https://github.com/charles-001/dolphie)
 
 
-<div>
 <a href="https://github.com/charles-001/dolphie">
---8<-- "docs/images/screenshots/dolphie.svg"
+
+![Dolphie](https://www.textualize.io/static/img/dolphie.png)
+
 </a>
-</div>
 
 
 ---
@@ -196,7 +196,7 @@ Click the tabs to see the code behind the example.
 
 === "Calculator example"
 
-    ```{.textual path="examples/calculator.py" columns=100 lines=41 press="6,.,2,8,3,1,8,5,3,0,7,1,wait:400"}
+    ```{.textual path="examples/calculator.py" columns=100 lines=41 press="3,.,1,4,5,9,2,wait:400"}
     ```
 
 === "calculator.py"

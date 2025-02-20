@@ -78,7 +78,7 @@ class InvokeLater(Message, verbose=True, bubble=False):
 
 @rich.repr.auto
 class ScrollToRegion(Message, bubble=False):
-    """Ask the parent to scroll a given region into view."""
+    """Ask the parent to scroll a given region in to view."""
 
     def __init__(self, region: Region) -> None:
         self.region = region
@@ -100,7 +100,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 
 
 @rich.repr.auto
-class InBandWindowResize(Message):
+class TerminalSupportInBandWindowResize(Message):
     """Reports if the in-band window resize protocol is supported.
 
     https://gist.github.com/rockorager/e695fb2924d36b2bcf1fff4a3704bd83"""
@@ -121,16 +121,18 @@ class InBandWindowResize(Message):
         yield "enabled", self.enabled
 
     @classmethod
-    def from_setting_parameter(cls, setting_parameter: int) -> InBandWindowResize:
+    def from_setting_parameter(
+        cls, setting_parameter: int
+    ) -> TerminalSupportInBandWindowResize:
         """Construct the message from the setting parameter.
 
         Args:
             setting_parameter: Setting parameter from stdin.
 
         Returns:
-            New InBandWindowResize instance.
+            New TerminalSupportInBandWindowResize instance.
         """
 
         supported = setting_parameter not in (0, 4)
         enabled = setting_parameter in (1, 3)
-        return InBandWindowResize(supported, enabled)
+        return TerminalSupportInBandWindowResize(supported, enabled)
