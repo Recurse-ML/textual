@@ -176,7 +176,7 @@ class RichLog(ScrollView, can_focus=True):
         self,
         content: RenderableType | object,
         width: int | None = None,
-        expand: bool = False,
+        fill: bool = False,
         shrink: bool = True,
         scroll_end: bool | None = None,
         animate: bool = False,
@@ -192,7 +192,7 @@ class RichLog(ScrollView, can_focus=True):
             content: Rich renderable (or a string).
             width: Width to render, or `None` to use `RichLog.min_width`.
                 If specified, `expand` and `shrink` will be ignored.
-            expand: Permit expanding of content to the width of the content region of the RichLog.
+            fill: Permit expanding of content to the width of the content region of the RichLog.
                 If `width` is specified, then `expand` will be ignored.
             shrink: Permit shrinking of content to fit within the content region of the RichLog.
                 If `width` is specified, then `shrink` will be ignored.
@@ -208,7 +208,7 @@ class RichLog(ScrollView, can_focus=True):
             if isinstance(content, Text):
                 content = content.copy()
             self._deferred_renders.append(
-                DeferredRender(content, width, expand, shrink, scroll_end)
+                DeferredRender(content, width, fill, shrink, scroll_end)
             )
             return self
 
@@ -236,7 +236,7 @@ class RichLog(ScrollView, can_focus=True):
             render_width = renderable_width
             scrollable_content_width = self.scrollable_content_region.width
 
-            if expand and renderable_width < scrollable_content_width:
+            if fill and renderable_width < scrollable_content_width:
                 # Expand the renderable to the width of the scrollable content region.
                 render_width = max(renderable_width, scrollable_content_width)
 
@@ -279,11 +279,7 @@ class RichLog(ScrollView, can_focus=True):
         # the new line(s), and the height will definitely have changed.
         self.virtual_size = Size(self._widest_line_width, len(self.lines))
 
-        if (
-            auto_scroll
-            and not self.is_vertical_scrollbar_grabbed
-            and is_vertical_scroll_end
-        ):
+        if auto_scroll:
             self.scroll_end(animate=animate, immediate=False, x_axis=False)
 
         return self
