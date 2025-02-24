@@ -356,8 +356,6 @@ class ScrollBar(Widget):
         event.stop()
 
     def _on_mouse_capture(self, event: events.MouseCapture) -> None:
-        if isinstance(self._parent, Widget):
-            self._parent._user_scroll_interrupt = True
         self.grabbed = event.mouse_position
         self.grabbed_position = self.position
 
